@@ -7,9 +7,6 @@ use App\Enums\StatusCode;
 use App\Models\FailedUser;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
-use stdClass;
 
 class UserRepository
 {
@@ -23,16 +20,15 @@ class UserRepository
     }
 
 
-    public static function createUser($data): JsonResponse
+    public static function createUser(array $data): JsonResponse
     {
         try {
-            DB::table('users')->insert($data);
-            
+            User::create($data);
+
             return response()->json(__('message.userCreated'), StatusCode::OK->value);
         } catch (\Exception $exception) {
-
-            $dataFailedUser = FailedUserDTO::getDataFailedUser($data, $exception->getMessage());
-            FailedUserRepository::createFailedUser($dataFailedUser);
+            $payload = FailedUserDTO::getDataFailedUser($data, $exception->getMessage());
+            FailedUserRepository::createFailedUser($payload);
 
             return response()->json(__('message.userCreatedFailed'), StatusCode::INTERNAL_SERVER_ERROR->value);
         }

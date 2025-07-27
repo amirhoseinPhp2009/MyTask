@@ -1,16 +1,10 @@
 <?php
 
 use App\Http\Controllers\Tour\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-//Cancelling Reserves By CountryId Route
-//Route::post('/reserve-cancelling-by-country-id/{countryId}', [ReserveController::class, 'reserveCancellingByCountryId']);
-
+//Creating User With Any Request Method .
 Route::any('users/create-user', [UserController::class, 'createUser']);
 
-Route::get('{uuidUserFailed}/failed-create-user', [UserController::class, 'retryCreateUser']);
+// Retrying the User Failed .
+Route::get('{uuid}/retry-create-user', [UserController::class, 'retryCreateUser']);

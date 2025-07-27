@@ -19,21 +19,17 @@ class UserController extends Controller
 
     public function createUser(UserRequest $request): JsonResponse
     {
-        $userData = UserDTO::getDataUser($request);
-        $response = $this->userRepository->createUser($userData);
+        $requestData = UserDTO::getDataUser($request);
+        $response = $this->userRepository->createUser($requestData);
 
         return response()->json($response);
     }
 
-    public function retryCreateUser(string $uuidUserFailed): JsonResponse
+    public function retryCreateUser(string $uuid): JsonResponse
     {
-        $dataUserFailed = $this->userRepository->findUserFailedByUuId($uuidUserFailed);
-        $dataUserFailedWithArrayType = json_decode($dataUserFailed['payload'], true);
-//        dd($dataUserFailedWithArrayType);
-        $response = $this->userRepository->createUser($dataUserFailedWithArrayType);
-        if ($response->status() === 200) {
-            $dataUserFailed->delete();
-        }
+        $recordFailed = $this->userRepository->findUserFailedByUuId($uuid);
+        $paramsRecordFailed = json_decode($recordFailed['payload'], true);
+        $response = $this->userRepository->createUser($paramsRecordFailed);
 
         return response()->json($response);
     }
