@@ -4,6 +4,8 @@ namespace App\Repositories\Tour;
 
 use App\DTO\FailedUserDTO;
 use App\Enums\StatusCode;
+use App\Models\FailedUser;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -13,14 +15,11 @@ class UserRepository
 {
     /**
      * @param string $uuId
-     * @return stdClass
+     * @return FailedUser
      */
-    public static function findUserFailedByUuId(string $uuId): stdClass
+    public static function findUserFailedByUuId(string $uuId): FailedUser
     {
-        dd(
-            DB::table('failed_users')->where('uuid', $uuId)->get()->first()
-            );
-//        return
+        return FailedUser::where('uuid', $uuId)->first();
     }
 
 
@@ -28,13 +27,14 @@ class UserRepository
     {
         try {
             DB::table('users')->insert($data);
-
+            
             return response()->json(__('message.userCreated'), StatusCode::OK->value);
         } catch (\Exception $exception) {
+
             $dataFailedUser = FailedUserDTO::getDataFailedUser($data, $exception->getMessage());
             FailedUserRepository::createFailedUser($dataFailedUser);
 
-            return response()->json($exception, StatusCode::INTERNAL_SERVER_ERROR->value);
+            return response()->json(__('message.userCreatedFailed'), StatusCode::INTERNAL_SERVER_ERROR->value);
         }
     }
 }

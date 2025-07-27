@@ -2,13 +2,15 @@
 
 namespace App\Repositories\Tour;
 
+use App\Models\FailedUser;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Builder;
 
 class FailedUserRepository{
 
-    public static function createFailedUser(array $data): void
+    public static function createFailedUser(array $data): bool
     {
-        DB::table('failed_users')->insert($data);
+        return DB::table('failed_users')->insert($data);
     }
 
 }

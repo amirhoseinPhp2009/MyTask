@@ -28,7 +28,12 @@ class UserController extends Controller
     public function retryCreateUser(string $uuidUserFailed): JsonResponse
     {
         $dataUserFailed = $this->userRepository->findUserFailedByUuId($uuidUserFailed);
-        $response = $this->userRepository->createUser($dataUserFailed['payload']);
+        $dataUserFailedWithArrayType = json_decode($dataUserFailed['payload'], true);
+//        dd($dataUserFailedWithArrayType);
+        $response = $this->userRepository->createUser($dataUserFailedWithArrayType);
+        if ($response->status() === 200) {
+            $dataUserFailed->delete();
+        }
 
         return response()->json($response);
     }
