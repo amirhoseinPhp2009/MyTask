@@ -1,10 +1,12 @@
 <?php
 
-use App\Http\Controllers\Tour\UserController;
+use App\Http\Controllers\Project\UsersController;
 use Illuminate\Support\Facades\Route;
 
-//Creating User With Any Request Method .
-Route::any('users/create-user', [UserController::class, 'createUser']);
+// Create User
+Route::post('/users/create-user', [UsersController::class, 'store']);
 
-// Retrying the User Failed .
-Route::get('{uuid}/retry-create-user', [UserController::class, 'retryCreateUser']);
+//Retry Create User
+Route::get('{uuid}/users/retry', [UsersController::class, 'retry']);
+
+Route::get('/m', [\App\Http\Controllers\Project\BaseController::class, 'index']);

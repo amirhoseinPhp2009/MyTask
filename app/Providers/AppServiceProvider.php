@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 
-use App\Events\SendMessageByTelegramBotEvent;
-use App\Listeners\SendMessageByTelegramBotListener;
+//use App\Events\SendMessageByTelegramBotEvent;
+//use App\Listeners\SendMessageByTelegramBotListener;
+use App\Models\User;
+use App\Observers\UserObserver;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
@@ -28,6 +30,8 @@ class AppServiceProvider extends ServiceProvider
             return config('app.frontend_url')."/password-reset/$token?email={$notifiable->getEmailForPasswordReset()}";
         });
 
-        Event::listen(SendMessageByTelegramBotEvent::class, SendMessageByTelegramBotListener::class);
+//        Event::listen(SendMessageByTelegramBotEvent::class, SendMessageByTelegramBotListener::class);
+
+        User::observe(UserObserver::class);
     }
 }

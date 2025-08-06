@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Services\RandomElementCreatorService;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class ProvincesLocationTableSeeder extends Seeder
+class RatePlansTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,16 +14,12 @@ class ProvincesLocationTableSeeder extends Seeder
     public function run(): void
     {
         $faker = \Faker\Factory::create();
-        $limit = 100;
-        $character = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $limit = 10;
 
         for ($i = 0; $i < $limit; $i++) {
-            $city_name = $faker->city;
-
-            DB::table('locations')->insert([
-                'name_fa' => $city_name,
-                'name_en' => $city_name,
-                'country_id' => $faker->numberBetween($min = 1, $max = 34),
+            DB::table('rate_plans')->insert([
+                'name' => $faker->word,
+                'description' => $faker->text,
                 'created_at' => $faker->dateTimeBetween('-2 years', '-1 years'),
                 'updated_at' => $faker->dateTimeBetween('-1 years', 'now'),
             ]);

@@ -4,16 +4,11 @@ namespace App\Services;
 
 class RandomElementCreatorService
 {
-    public static function randomStringFrom(string $character, int $length, int $min, int $max): string
+    public static function randomStringFrom($character): string
     {
-        $string = '';
+        $pin = mt_rand(10,20)
+            . $character[rand(0, strlen($character) - 1)];
 
-        for ($i = 0; $i < $length; $i++) {
-            $index = rand($min, $max);
-            $string .= $character[$index];
-        }
-
-        return $string;
+        return str_shuffle($pin);
     }
-
 }

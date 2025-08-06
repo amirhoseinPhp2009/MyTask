@@ -4,23 +4,22 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('locations', function (Blueprint $table) {
+        Schema::create('room_prices', function (Blueprint $table) {
             $table->id();
 
-            $table->string('name_fa', 100);
-            $table->string('name_en', 100);
+            $table->foreignId('room_id')->constrained('rooms');
+            $table->date('day');
 
-            $table->biginteger('country_id')->nullable();
-            $table->biginteger('province_id')->nullable();
+            $table->unique(['room_id', 'day']);
 
-            $table->string('country_iso_code', 3)->nullable()->unique();
+            $table->integer('purchase_price');
+            $table->integer('sell_price');
 
             $table->timestamps();
             $table->softDeletes();
@@ -32,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('locations');
+        Schema::dropIfExists('room_prices');
     }
 };

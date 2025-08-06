@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Tour;
+namespace App\Http\Requests\Project;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ReserveCancellingCountryIdRequest extends FormRequest
+class UserRequest extends FormRequest
 {
-    public int $countryId;
-
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -24,7 +22,11 @@ class ReserveCancellingCountryIdRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'countryId' => 'required|exists:countries,countryId|integer',
+            "first_name" => "required",
+            "last_name" => "required",
+            "phone" => "required|numeric|unique:users,phone",
+            "email" => "required|email|unique:users,email",
         ];
     }
+
 }

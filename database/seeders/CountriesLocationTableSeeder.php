@@ -19,7 +19,7 @@ class CountriesLocationTableSeeder extends Seeder
 
         for ($i = 0; $i < $limit; $i++) {
             $country_name = $faker->country;
-            $country_iso_code = RandomElementCreatorService::randomStringFrom($character, 3, 0, 24);
+            $country_iso_code = RandomElementCreatorService::randomStringFrom($character);
 
             DB::table('locations')->insert([
                 'name_fa' => $country_name,

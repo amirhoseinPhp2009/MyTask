@@ -4,22 +4,21 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('user_fails', function (Blueprint $table) {
+        Schema::create('rate_plans', function (Blueprint $table) {
             $table->id();
 
-            $table->string('uuid');
+            $table->string('name', 150);
+            $table->text('description');
 
-            $table->longText('payload');
-            $table->longText('exception');
+            $table->timestamps();
 
-            $table->timestamp('failed_at');
+            $table->softDeletes();
         });
     }
 
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_fails');
+        Schema::dropIfExists('rate_plans');
     }
 };
