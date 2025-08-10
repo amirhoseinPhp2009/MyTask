@@ -1,27 +1,25 @@
-<?php /** @noinspection ALL */
+<?php
 
 namespace App\Http\Controllers\Project;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Project\UserRequest;
 use App\Models\User;
-use App\Repositories\Project\UserRepository;
-use Illuminate\Database\Query\Builder;
 
 class BaseController extends Controller
 {
     public function index()
     {
-//        $data = [
-//            'first_name' => 'am',
-//            'last_name' => 'm',
-//            'phone' => '0123456789',
-//            'email' => 'jddfa@gmail.com'
-//        ];
 
+        $data = [
+            'first_name' => 'amirhosein',
+            'lastname' => 'babaei',
+            'phone' => '09399008730',
+            'email' => 'amirhb@gmail.com',
 
-        $users = User::where('id', '=', 1)->where('first_name', '=','amirh')->get();
+        ];
 
-        dd($users);
+        $dd = User::where('id', 15)->first()->update($data);
+        dd($dd);
     }
+
 }

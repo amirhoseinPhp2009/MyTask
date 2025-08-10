@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Hash;
 
 class UserBuilder extends Builder
 {
+    public string $driver;
+
     public function buildUniqueStringHash(string $sql, array $bindings): string
     {
         $queryWithBindings = $sql . '|' . json_encode($bindings);
@@ -23,7 +25,10 @@ class UserBuilder extends Builder
 
         if (Cache::has($cacheKey)) {
             $getCache = Cache::get($cacheKey);
-//            $getCache['driver'] = 'cache';
+
+            $this->driver = 'cache';
+
+            $getCache['driver'] = $this->driver;
 
             return $getCache;
         }
@@ -32,7 +37,9 @@ class UserBuilder extends Builder
             $this->query->get($columns)->all()
         )->all();
 
-//        $response['driver'] = 'database';
+        $this->driver = 'database';
+
+        $response['driver'] = $this->driver;
 
         Cache::forever($cacheKey, $response);
 

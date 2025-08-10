@@ -2,21 +2,17 @@
 
 namespace App\Models;
 
-use App\Models\Builders\UserBuilder;
-use App\ModelScopes\UserScope;
+use App\Traits\ModelCachable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 
 class User extends Model
 {
+
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, ModelCachable;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -54,38 +50,26 @@ class User extends Model
     }
 
 
-//    protected static function booted(): void
+//    static function booted(): void
 //    {
 //        static::saving(function ($model) {
-//            $query = $model->toSql();
-//            $result = $model->attributes;
-//
-////            Cache::put('arr', $result);
-//            dd(Cache::get('arr'));
+//            return Cache::clear();
 //        });
 //
 //        static::deleting(function ($model) {
-//            dd('deleting');
+//            return Cache::clear();
 //        });
 //
 //        static::deleting(function ($model) {
-//            dd('deleting');
+//            return Cache::clear();
 //        });
 //
-//        static::retrieved(function ($model) {
-//            $attr = $model->toSql();
-////            $str = $attr['id'] . $attr['email'] . $attr['phone'];
-////            $hash = Hash::make($str);
-//            $emo = $model->getBindings();
-////            dd($model->toSql());
-//        });
-
-
 //    }
-
-public function newEloquentBuilder($query): UserBuilder
-{
-    return new UserBuilder($query);
-}
+//
+//    public
+//    function newEloquentBuilder($query): UserBuilder
+//    {
+//        return new UserBuilder($query);
+//    }
 
 }
