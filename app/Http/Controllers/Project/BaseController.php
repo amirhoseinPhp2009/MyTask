@@ -18,7 +18,7 @@ class BaseController extends Controller
 
         ];
 
-        $dd = User::where('id', 15)->first()->update($data);
+        $dd = User::where('id', 20)->first()->retry();
         dd($dd);
     }
 

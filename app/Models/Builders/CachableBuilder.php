@@ -4,12 +4,13 @@ namespace App\Models\Builders;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class CachableBuilder extends Builder
 {
     protected string $driverName;
 
-    public function buildUniqueStringHash(string $sql, array $bindings): string
+    public function buildbase64StringWithParams(string $sql, array $bindings): string
     {
         $queryWithBindings = $sql . '|' . json_encode($bindings);
 
@@ -18,26 +19,30 @@ class CachableBuilder extends Builder
 
     protected function getModelsByCache(string $cacheKey)
     {
-        $getCache = Cache::get($cacheKey);
+        $modelsFromCache = Cache::get($cacheKey);
 
-        if ($getCache)
-        {
-            foreach ($getCache as $cache) {
-                $cache->driver = 'cache';
+        if ($modelsFromCache) {
+            foreach ($modelsFromCache as $cache){
+                $cache->drive = 'cache';
+                $cache->cacheKey = $cacheKey;
             }
         }
 
-        return $getCache;
+        return $modelsFromCache;
     }
 
     protected function getModelsByDatabase($columns, string $cacheKey, bool $is_cache)
     {
         $response = $this->model->hydrate(
-            $this->query->get($columns)->all()
+            $this->query->get()->all()
         )->all();
 
-        foreach ($response as $resp) {
-            $resp->driver = 'database';
+        foreach ($response as $res)
+        {
+            $res->driver = 'database';
+            $res->cacheKey = $cacheKey;
+            $res->querySyntax = $this->query->toSql();
+            $res->bindings = $this->query->getBindings();
         }
 
         if ($is_cache) {
@@ -50,12 +55,11 @@ class CachableBuilder extends Builder
     public function getModels($columns = ['*'])
     {
         $builder = $this->query;
-        $cacheKey = $this->buildUniqueStringHash($builder->toSql(), $builder->getBindings());
+        $cacheKey = $this->buildbase64StringWithParams($builder->toSql(), $builder->getBindings());
 
         if (isset($this->driverName) && 'database' === $this->driverName) {
             return $this->getModelsByDatabase($columns, $cacheKey, false);
         }
-
         if (Cache::has($cacheKey)) {
             return $this->getModelsByCache($cacheKey);
         }
@@ -70,21 +74,39 @@ class CachableBuilder extends Builder
         return $this;
     }
 
-    public function retry($columns = ['*'])
+    public function deleteCache(): bool
     {
-        $builder = $this->query;
-        $cacheKey = $this->buildUniqueStringHash($builder->toSql(), $builder->getBindings());
+        $cacheKey = $this->model->cacheKey;
 
         if (Cache::has($cacheKey)) {
-            Cache::delete($cacheKey);
+            return Cache::forget($cacheKey);
         }
-
-        $resp = $this->getModelsByDatabase($columns, $cacheKey, true);
-
-        foreach ($resp as $res) {
-            $res->driver = 'cache';
-        }
-
-        return $resp;
     }
+
+    public function retryCache()
+    {
+        $cacheKey = $this->model->cacheKey;
+        $query = $this->model->querySyntax;
+        $bindings = $this->model->bindings;
+
+        $data = DB::select($query, $bindings);
+        $response = $this->hydrate($data)->all();
+
+        if (Cache::has($cacheKey)) {
+            Cache::forget($cacheKey);
+        }
+
+        foreach ($response as $res) {
+            $res['driver'] = 'cache';
+            $res['cacheKey'] = $cacheKey;
+            $res['querySyntax'] = $query;
+            $res['bindings'] = $bindings;
+        }
+
+        Cache::forever($cacheKey, $response);
+
+        return $response;
+    }
+
+
 }

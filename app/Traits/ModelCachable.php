@@ -24,16 +24,21 @@ trait ModelCachable
         static::saving(function ($model) use ($instance) {
             $instance->clearCache();
             unset($model->attributes['driver']);
+            unset($model->attributes['cacheKey']);
+            unset($model->attributes['querySyntax']);
+            unset($model->attributes['bindings']);
         });
 
         static::updating(function ($model) use ($instance) {
             $instance->clearCache();
             unset($model->attributes['driver']);
+            unset($model->attributes['cacheKey']);
+            unset($model->attributes['querySyntax']);
+            unset($model->attributes['bindings']);
         });
 
         static::deleting(function () use ($instance) {
             $instance->clearCache();
         });
     }
-
 }
