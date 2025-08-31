@@ -31,7 +31,6 @@ class getAllUsersCommand extends Command
         $start = Carbon::now();
 
         DB::listen(function ($query) {
-
             Log::channel('telegram')->info(json_encode($query));
         });
 

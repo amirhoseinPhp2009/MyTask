@@ -6,15 +6,15 @@ use Illuminate\Support\Collection;
 
 interface baseRepositoryInterface
 {
-    public function connection (string $operation);
+    public function connection ();
 
     public function getAll(): Collection;
 
     public function getOneById($id): Collection;
 
-    public function create(): bool;
+    public function create(array $data): bool;
 
-    public function update(): bool;
+    public function update($id, array $data): bool;
 
-    public function delete(): bool;
+    public function delete($id): bool;
 }
