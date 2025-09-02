@@ -2,26 +2,34 @@
 
 namespace App\Listeners;
 
-use Carbon\Carbon;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Support\Facades\Log;
+use App\Repositories\CommandTask\CommandQueryLogRepository;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class CommandFinishedListener
 {
     /**
      * Create the event listener.
      */
-    public function __construct()
+    protected CommandQueryLogRepository $commandQueryLogRepository;
+
+    public function __construct(CommandQueryLogRepository $commandQueryLogRepository)
     {
-        //
+        $this->commandQueryLogRepository = $commandQueryLogRepository;
     }
 
     /**
      * Handle the event.
      */
-    public function handle(object $event): void
+    public function handle(): void
     {
-        echo "Thanks For Select Laravel !";
+        $queries = Cache::get('commandQueryDataCache');
+        if (null === $queries) {
+            return;
+        }
+
+        DB::table('command_query_logs')->insert($queries);
+
+        Cache::forget('commandQueryDataCache');
     }
 }

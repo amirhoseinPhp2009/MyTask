@@ -12,7 +12,7 @@ interface baseRepositoryInterface
 
     public function getOneById($id): Collection;
 
-    public function create(array $data): bool;
+    public function insert(array $data);
 
     public function update($id, array $data): bool;
 

@@ -23,7 +23,7 @@ class CommandQueryLogRepository implements baseRepositoryInterface
         return $this->connection()->get($id);
     }
 
-    public function create(array $data): bool
+    public function insert(array $data)
     {
         $this->connection()->insert($data);
     }
