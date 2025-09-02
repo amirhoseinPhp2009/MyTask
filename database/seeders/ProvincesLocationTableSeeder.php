@@ -23,7 +23,7 @@ class ProvincesLocationTableSeeder extends Seeder
             DB::table('locations')->insert([
                 'name_fa' => $city_name,
                 'name_en' => $city_name,
-                'country_id' => $faker->numberBetween($min = 709, $max = 808),
+                'country_id' => $faker->numberBetween($min = 1, $max = 34),
                 'created_at' => $faker->dateTimeBetween('-2 years', '-1 years'),
                 'updated_at' => $faker->dateTimeBetween('-1 years', 'now'),
             ]);

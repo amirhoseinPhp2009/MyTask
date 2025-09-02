@@ -1,16 +1,18 @@
 <?php
 
-use App\Http\Controllers\Tour\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Task\ProductController;
 
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
+//CRUD Products
+Route::group(['prefix' => 'products'], function () {
+    //get all products
+    Route::get('all', [ProductController::class, 'getAllProducts']);
+    //get a product by product_id
+    Route::get('{product_id}', [ProductController::class, 'getProduct']);
+    //create product
+    Route::post('create', [ProductController::class, 'createProduct']);
+    //update product
+    Route::post('{product_id}/update', [ProductController::class, 'updateProduct']);
+    //delete product
+    Route::post('{product_id}/delete', [ProductController::class, 'deleteProduct']);
 });
-
-//Cancelling Reserves By CountryId Route
-//Route::post('/reserve-cancelling-by-country-id/{countryId}', [ReserveController::class, 'reserveCancellingByCountryId']);
-
-Route::any('users/create-user', [UserController::class, 'createUser']);
-
-Route::get('{uuidUserFailed}/failed-create-user', [UserController::class, 'retryCreateUser']);

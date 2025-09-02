@@ -1,0 +1,81 @@
+[
+    {
+        "id": 1,
+        "name": "macaroon",
+        "made_in": "iran",
+        "price": "1000",
+        "description" : 'this is product for ...',
+        "created_at": "2025-08-06 12:24:09"
+    },
+    {
+       "id": 2,
+       "name": "water natural",
+       "made_in": "iran",
+       "price": "2000",
+       "created_at": "2025-08-06 12:24:09"
+    },
+    {
+        "id": 3,
+        "name": "rice",
+        "made_in": "england",
+        "price": "1500",
+        "description" : 'this is product for ...',
+        "created_at": "2025-08-06 12:24:09"
+    },
+    {
+        "id": 4,
+        "name": "color",
+        "made_in": "iran",
+        "price": "30000",
+        "description" : 'this is product for ...',
+        "created_at": "2025-08-06 12:24:09"9"
+    },
+    {
+        "id": 5,
+        "name": "chicken",
+        "made_in": "iran",
+        "price": "4000",
+        "description" : 'this is product for ...',
+        "created_at": "2025-08-06 12:24:09"9"
+    },
+    {
+        "id": 6,
+        "name": "oil",
+        "made_in": "russia",
+        "price": "9000",
+        "description" : 'this is product for ...',
+        "created_at": "2025-08-06 12:24:09"9"
+    },
+    {
+        "id": 7,
+        "name": "yoghurt",
+        "made_in": "iran",
+        "price": "8000",
+        "description" : 'this is product for ...',
+        "created_at": "2025-08-06 12:24:09"9"
+    },
+    {
+      "id": 8,
+      "name": "bread",
+      "made_in": "spanish",
+      "price": "7000",
+      "description" : 'this is product for ...',
+      "created_at": "2025-08-06 12:24:09"9"
+    },
+    {
+        "id": 9,
+        "name": "plastic",
+        "made_in": "iran",
+        "price": "5000",
+        "description" : 'this is product for ...',
+        "created_at": "2025-08-06 12:24:09"9"
+    },
+    {
+       "id": 10,
+       "name": "cake",
+       "made_in": "iran",
+       "price": "6700",
+       "description" : 'this is product for ...',
+       "created_at": "2025-08-06 12:24:09"9"
+    },
+]
